@@ -21,6 +21,6 @@ export const connectToDB = async () => {
 
     isConnected = true;
   } catch (error) {
-    console.error('An unexpected error occured', error);
+    console.error('An unexpected error occured while connecting to Database', error);
   }
 }
