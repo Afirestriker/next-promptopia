@@ -11,43 +11,45 @@ const handler = nextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET
     })
   ],
-  async session({ session }) {
-    const sessionUser = User.findOne({
-      email: session.user.email
-    });
+  callbacks: {
+    async session({ session }) {
+      try {
+        // await connectToDB(); // uncomment if some error persists while sign-in
 
-    session.user.id = sessionUser._id.toString();
+        const sessionUser = await User.findOne({
+          email: session.user.email
+        });
 
-    return session;
-  },
-  async signIn({ profile }) {
-    try {
-      /**
-        Every Next JS route is knwon as a ServerLess Route.
-        Which means that this is a lambda function which opens up only when it is called
-        So every time it gets called, its need to spinup the server and make a connection to the database.
-        This is great so that we don't have to keep our server running.
-      */
-      await connectToDB();
+        session.user.id = sessionUser._id.toString();
 
-      // check if a user already exists
-      const userExists = await User.findOne({
-        email: profile.email
-      });
+        return session;
+      } catch (error) {
+        console.error("An unexpected error occured in session verification", error);
+      }
+    },
+    async signIn({ profile }) {
+      try {
+        console.log("In SignIn callback Function")
 
-      // if not, create a new user
-      if (!userExists) {
+        await connectToDB();
+
+        // check if a user already exists
+        const userExists = await User.findOne({
+          email: profile.email
+        });
+
+        if (userExists) return true;
+
+        // if not, create a new user
         User.create({
           email: profile.email,
           username: profile.name.replace(' ', '').toLowerCase(),
           image: profile.picture
         });
+      } catch (error) {
+        console.error('An unexpected error occured during sign-in', error);
+        return false;
       }
-
-      return true;
-    } catch (error) {
-      console.log('An unexpected error occured', error);
-      return false;
     }
   }
 });
