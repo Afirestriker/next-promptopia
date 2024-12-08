@@ -1,5 +1,7 @@
 import nextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+
+import User from '@models/user';
 import { connectToDB } from '@utils/database';
 
 const handler = nextAuth({
@@ -10,7 +12,13 @@ const handler = nextAuth({
     })
   ],
   async session({ session }) {
+    const sessionUser = User.findOne({
+      email: session.user.email
+    });
 
+    session.user.id = sessionUser._id.toString();
+
+    return session;
   },
   async signIn({ profile }) {
     try {
@@ -23,8 +31,18 @@ const handler = nextAuth({
       await connectToDB();
 
       // check if a user already exists
+      const userExists = await User.findOne({
+        email: profile.email
+      });
 
       // if not, create a new user
+      if (!userExists) {
+        User.create({
+          email: profile.email,
+          username: profile.name.replace(' ', '').toLowerCase(),
+          image: profile.picture
+        });
+      }
 
       return true;
     } catch (error) {
