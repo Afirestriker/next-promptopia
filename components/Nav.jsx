@@ -17,7 +17,7 @@ const Nav = () => {
     }
 
     getSetProviders();
-  }, [])
+  }, []);
 
   return (
     <nav className="w-full flex-between mb-16 pt-3">
