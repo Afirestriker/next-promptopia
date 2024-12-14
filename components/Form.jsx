@@ -39,7 +39,7 @@ const Form = ({
         <label>
           <span className="font-satoshi font-semibold text-base text-gray-700">
             Tag {' '}
-            <span className="font-normal">(#product, #webDevelopment, #idea)</span>
+            <span className="font-normal">(#product, #webdevelopment, #idea)</span>
           </span>
         </label>
 
@@ -57,7 +57,7 @@ const Form = ({
           </Link>
 
           <button
-            type="button"
+            type="submit"
             className="px-5 py-1.5 text-sm rounded-full bg-primary-orange text-white"
           >
             {isSubmitting ? `${type}...` : type}
