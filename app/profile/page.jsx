@@ -22,11 +22,19 @@ const ProfilePage = () => {
 
   const handleEdit = (promptId) => {
     router.push(`/update-prompt?id=${promptId}`);
-  }
+  };
 
-  const handleDelete = (promptId) => {
+  const handleDelete = async (promptId) => {
+    try {
+      const response = await fetch(`/api/prompt/${promptId}/`, {
+         method: 'DELETE'
+      });
 
-  }
+      if (response.ok) router.push('/profile');
+    } catch (error) {
+      console.error('Failed to delete prompt', error);
+    }
+  };
 
   return (
     <Profile
@@ -35,7 +43,7 @@ const ProfilePage = () => {
       handleEdit={handleEdit}
       handleDelete={handleDelete}
     />
-  )
+  );
 }
 
 export default ProfilePage;
