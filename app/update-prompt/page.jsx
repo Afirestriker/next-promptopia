@@ -16,6 +16,8 @@ const updatePrompt = ({ params }) => {
   const promptId = searchParams.get('id');
 
   useEffect(() => {
+    if (!promptId) return;
+
     // IIFE - getPromptDetails
     (async () => {
       try {
