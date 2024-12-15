@@ -20,8 +20,12 @@ const updatePrompt = ({ params }) => {
     (async () => {
       try {
         const response = await fetch(`/api/prompt/${promptId}/`, { method: 'GET' });
-        const promptData = await response.json();
-        setPrompt(promptData);
+        const data = await response.json();
+
+        setPrompt({
+          prompt: data.prompt,
+          tag: data.tag
+        });
       } catch (error) {
         console.error("Failed to load prompt data", error);
       }
