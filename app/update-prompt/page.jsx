@@ -16,6 +16,7 @@ const updatePrompt = ({ params }) => {
   const promptId = searchParams.get('id');
 
   useEffect(() => {
+    // IIFE - getPromptDetails
     (async () => {
       try {
         const response = await fetch(`/api/prompt/${promptId}/`, { method: 'GET' });

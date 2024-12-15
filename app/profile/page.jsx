@@ -12,6 +12,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (session?.user.id) {
+      // IIFE - getUserPrompts
       (async () => {
         const response = await fetch(`/api/users/${session.user.id}/prompts`);
         const data = await response.json();

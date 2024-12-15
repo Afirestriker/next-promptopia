@@ -12,6 +12,7 @@ const Feed = () => {
   };
 
   useEffect(() => {
+    // IIFE - getAllPrompts
     (async () => {
       const response = await fetch('/api/prompt/', { method: "GET" });
       const data = await response.json();
