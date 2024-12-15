@@ -27,7 +27,6 @@ const Profile = ({
         ))}
       </div>
     </section>
-
   );
 }
 
