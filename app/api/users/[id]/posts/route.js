@@ -9,8 +9,8 @@ export async function GET(req, { params }) {
       creator: params.id
     }).populate('creator');
 
-    return new Reponse(JSON.stringify(prompts), { status: 200 });
+    return new Response(JSON.stringify(prompts), { status: 200 });
   } catch (error) {
-    return new Reponse("Failed to fetch user prompts", { status: 500 });
+    return new Response("Failed to fetch user prompts", { status: 500 });
   }
 }
