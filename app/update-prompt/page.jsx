@@ -5,13 +5,14 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Form from "@components/Form";
 
 const updatePrompt = ({ params }) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [prompt, setPrompt] = useState({
     prompt: "",
     tag: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const searchParams = useSearchParams();
-  const router = useRouter();
   const promptId = searchParams.get('id');
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const updatePrompt = ({ params }) => {
         console.error("Failed to load prompt data", error);
       }
     })();
-  }, []);
+  }, [promptId]);
 
   const updatePrompt = async (e) => {
     e.preventDefault();
