@@ -38,6 +38,8 @@ const updatePrompt = ({ params }) => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    if (!promptId) return alert('Prompt ID not found');
+
     try {
       const response = await fetch(`/api/prompt/${promptId}/`, {
         method: 'PATCH',
