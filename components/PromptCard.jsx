@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image'
 import { useSession } from 'next-auth/react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const PromptCard = ({
   prompt,
@@ -13,6 +13,7 @@ const PromptCard = ({
 }) => {
   const { data: session } = useSession();
   const pathname = usePathname();
+  const router = useRouter();
 
   const [copiedText, setCopiedText] = useState(false);
 
@@ -21,10 +22,19 @@ const PromptCard = ({
     setTimeout(() => setCopiedText(''), 3000);
   }
 
+  const handleCreatorClick = () => {
+    (session?.user.id === prompt.creator._id.toString())
+      ? router.push('/profile')
+      : router.push(`/profile/${prompt.creator._id.toString()}/?name=${prompt.creator.username}`);
+  }
+
   return (
     <div className="prompt_card">
       <div className="flex justify-between items-start gap-5">
-        <div className="flex-1 flex justify-start items-center gap-3 cursor-pointer">
+        <div
+          className="flex-1 flex justify-start items-center gap-3 cursor-pointer"
+          onClick={handleCreatorClick}
+        >
           <Image
             src={prompt.creator.image}
             alt="user_image"
