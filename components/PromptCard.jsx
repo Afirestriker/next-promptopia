@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import Image from 'next/image'
+import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 
 const PromptCard = ({
   prompt,
@@ -9,6 +11,9 @@ const PromptCard = ({
   handleEdit,
   handleDelete
 }) => {
+  const { data: session } = useSession();
+  const pathname = usePathname();
+
   const [copiedText, setCopiedText] = useState(false);
 
   const handlePromptCopy = (prompt) => {
@@ -66,6 +71,27 @@ const PromptCard = ({
       >
         {prompt.tag}
       </p>
+
+      {
+        (session?.user.id === prompt.creator._id && pathname === '/profile')
+        &&
+        <div
+          className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3"
+        >
+          <p
+            className="font-inter text-sm green_gradient cursor-pointer"
+            onClick={() => { handleEdit(prompt._id) }}
+          >
+            Edit
+          </p>
+          <p
+            className="font-inter text-sm orange_gradient cursor-pointer"
+            onClick={() => { handleDelete(prompt._id) }}
+          >
+            Delete
+          </p>
+        </div>
+      }
     </div>
   );
 }
