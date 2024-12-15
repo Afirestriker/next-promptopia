@@ -2,14 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import PromptCardList from '@components/PromptCardList';
+import { escapeRegExp } from '@utils/regexHelpers';
 
 const Feed = () => {
   const [searchText, setSearchText] = useState('');
   const [prompts, setPrompts] = useState([]);
-
-  const handleSearchChange = (e) => {
-    setSearchText(e.target.value);
-  };
+  const [filterPrompts, setFilterPrompts] = useState([]);
 
   useEffect(() => {
     // IIFE - getAllPrompts
@@ -19,6 +17,31 @@ const Feed = () => {
       setPrompts(data);
     })();
   }, []);
+
+  useEffect(() => {
+    if (!searchText.trim().length) {
+      setFilterPrompts(prompts);
+      return;
+    }
+
+    const regexString = escapeRegExp(searchText);
+    const regex = new RegExp(regexString.trim(), 'i');
+    const filterPromptItems = prompts.filter(prompt => (
+      regex.test(prompt.creator.username) ||
+      regex.test(prompt.prompt) ||
+      regex.test(prompt.tag)
+    ));
+
+    setFilterPrompts(filterPromptItems);
+  }, [searchText, prompts]);
+
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleTagClick = (tag) => {
+    setSearchText(tag);
+  }
 
   return (
     <section className="feed">
@@ -34,8 +57,8 @@ const Feed = () => {
       </form>
 
       <PromptCardList
-        prompts={prompts}
-        handleTagClick={() => {}}
+        prompts={filterPrompts}
+        handleTagClick={handleTagClick}
       />
     </section>
   )
