@@ -26,12 +26,18 @@ const ProfilePage = () => {
   };
 
   const handleDelete = async (promptId) => {
+    if (!confirm('Are your sure, you want to delete this prompt?')) return;
+
     try {
       const response = await fetch(`/api/prompt/${promptId}/`, {
          method: 'DELETE'
       });
 
-      if (response.ok) router.push('/profile');
+      if (!response.ok) throw new Error('Failed to delete prompt!');
+
+      const filterPrmompt = prompts.filter(prompt => prompt._id.toString() !== promptId);
+
+      setPrompts(filterPrmompt);
     } catch (error) {
       console.error('Failed to delete prompt', error);
     }
