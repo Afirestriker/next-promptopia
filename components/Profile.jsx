@@ -2,6 +2,7 @@ import PromptCard from "./PromptCard";
 
 const Profile = ({
   name,
+  desc,
   data,
   handleEdit,
   handleDelete
@@ -13,7 +14,7 @@ const Profile = ({
       </h1>
 
       <p className="desc text-left">
-        Welcome to your personalized profile page
+        {desc}
       </p>
 
       <div className="mt-10 prompt_layout">
