@@ -80,13 +80,13 @@ const PromptCard = ({
         >
           <p
             className="font-inter text-sm green_gradient cursor-pointer"
-            onClick={() => { handleEdit(prompt._id) }}
+            onClick={() => { handleEdit(prompt._id.toString()) }}
           >
             Edit
           </p>
           <p
             className="font-inter text-sm orange_gradient cursor-pointer"
-            onClick={() => { handleDelete(prompt._id) }}
+            onClick={() => { handleDelete(prompt._id.toString()) }}
           >
             Delete
           </p>
